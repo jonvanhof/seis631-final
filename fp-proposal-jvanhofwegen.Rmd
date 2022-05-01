@@ -1,0 +1,18 @@
+---
+title: "An Investigation into the Value of Middle Relief in Major League Baseball"
+author: "Jon Van Hofwegen"
+date: "4/16/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## SEIS 631 Final Project Proposal
+
+As an avid baseball fan and regular Fantasy Baseball participant for the Major Leagues, over the years I've been curious about the value of a group of players that largely go unheralded in Fantasy circles, but appear to be of great import to the teams in their pursuit of winning games: Middle Relievers.  This group of pitchers are usually the initial first few options out of the bullpen to either protect a lead or keep a run deficit close once the Starting Pitcher has been pulled from the game.  These players are often of less value in Fantasy Baseball leagues due to their lack of accrual of counting stats - by design of their assignment they rarely have the opportunity to earn Wins or close games to earn Saves and are often tasked with working through the heart of the opponent's batting order for the 3rd or 4th time, leaving them exposed to an inflated ERA.
+
+However, I've theorized in my time watching that elite middle relief pitching creates great value to teams in increasing their probability of victory despite not being top of mind roster targets for Fantasy Managers.  One of the first notable examples of this was in the 2015 World Series, where the Kansas City Royals cruised to the Championship in just 5 games bolstered by top-level relief pitching in the 7th and 8th inning beyond trotting out an excellent closer.  And so I'd like to investigate this more fully across the last several seasons of game data to answer the question: *Does the introduction of a high-level middle reliever have a significant impact on a team's ability to win games?*  If time allows, I'd like to also answer the question: *If both teams introduce elite relief in the middle innings of the same game, does then quality of lineup or defense significantly affect the game outcome?*
+
+I'll be trying to accomplish this by doing hypothesis testing that **Yes, middle relief does significantly impact win percentage** and **No, when elite relief is introduced on both teams, lineup and defense does not significantly impact game outcome**.  I feel that I'll be able to accomplish this using the excellent pitch-by-pitch data available at **Baseball Savant** (*https://baseballsavant.mlb.com*), which has a search feature that produces CSV data based on extremely specific criteria.  In my case, I'll be focusing on getting outcome data for pitchers in the 5th-8th innings only when it's their first time through the batting order as key identifiers to receive data for Middle Relievers only.  To attempt to review a big enough sample, I'll use data from 2018, 2019, and 2021 (2020 was a COVID-19 Pandemic shortened season, and therefore I will omit it due to smaller data set size). With this data I'll rely on the Fielding Independent Pitching or **FIP** (*https://library.fangraphs.com/pitching/fip/*) as an indicator of Pitcher quality and compare that against game outcomes and team winning percentage, which thankfully is also included in the Baseball Savant data set. 
