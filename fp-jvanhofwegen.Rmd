@@ -48,5 +48,27 @@ pitchers_2019 <- read.csv('savant_data_2019.csv')
 pitchers_2018 <- read.csv('savant_data_2018.csv')
 ```
 
-I'll be trying to accomplish this by doing hypothesis testing that **Yes, middle relief does significantly impact win percentage** and **No, when elite relief is introduced on both teams, lineup and defense does not significantly impact game outcome**.  I feel that 
+I'll be trying to accomplish this by doing hypothesis testing that **Yes, middle relief does significantly impact win percentage** and **No, when elite relief is introduced on both teams, lineup and defense does not significantly impact game outcome**.
+
+# Topics From Class
+
+## R Markdown
+
+I've used the LaTeX functions in R Markdown to spruce up the formatting for the FIP function definitions.  I've used R function definitions to repeatedly calculate FIP into a new data column for the consolidated player set.  I've used R functionality around file compression to shrink the size of the CSV file checked into GitHub. I've used the Histogram function to graphically represent the FIP distribution across the player set.
+
+## GitHub
+
+The R Project file, along with .gitignore tailored for R Markdown projects have been checked in to GitHub along with the project's RMarkdown and PDF files.
+
+## Standard Deviation
+
+The definition of "elite", "good", and "average" pitchers employed calculating the standard deviation of X FIP to allow for analysis of these individual segments.
+
+## Probability
+
+With these groupings established the probability is calculated for each group that a certain action will happen e.g. give up one run, give up a Home Run, surrender the lead, etc.
+
+## Confidence Intervals
+
+With the quality grouping and outcome probabilities understood, the final investigation will be what volume of pitching outcomes need to be recorded to have a certain confidence that a pitcher's FIP rating is accurate.
 
