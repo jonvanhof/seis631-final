@@ -1,0 +1,52 @@
+---
+title: "An Investigation into the Value of Middle Relief in Major League Baseball"
+author: "Jon Van Hofwegen"
+date: "5/3/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Middle Relievers: Unsung or Unimportant?
+
+As an avid baseball fan and regular Fantasy Baseball participant for the Major Leagues, over the years I've been curious about the value of a group of players that largely go unheralded in Fantasy circles, but appear to be of great import to the teams in their pursuit of winning games: Middle Relievers.  This group of pitchers is usually the initial first few options out of the bullpen to either protect a lead or keep a run deficit close once the Starting Pitcher has been pulled from the game.  These players are often of less value in Fantasy Baseball leagues due to their lack of accrual of counting stats - by design of their assignment they rarely have the opportunity to earn Wins or close games to earn Saves and are often tasked with working through the heart of the opponent's batting order for the 3rd or 4th time, leaving them exposed to an inflated ERA.
+
+However, I've theorized in my time watching that maintaining a roster of above average pitchers used in middle reliever role creates great value to teams in increasing their probability of victory despite not being top-of-mind roster targets for Fantasy Managers.  A recent notable example of this was in the 2015 World Series, where the Kansas City Royals cruised to the Championship in just 5 games bolstered by top-level relief pitching in the 7th and 8th inning beyond trotting out an excellent closer in the 9th.  And so I'd like to investigate this more fully across the last several seasons of game data to answer the question: **Does the introduction of a high-level middle reliever have a significant impact on a team's ability to win games?** Beyond that one-team focused inquiry, I'll attempt to broaden the investigation to in-game duels: **If both teams introduce elite relief in the middle innings of the same game, does then quality of lineup or defense significantly affect the game outcome?**
+
+## Baseball Background Definitions
+
+For those unfamiliar with the game of baseball, a brief description can be found in the **Baseball article on Wikipedia**, the first two paragraphs of which describe the basics of the game concisely. Highlighted terms can be referenced in the **Statistics** section of that article.  This investigation will assume the following definition of a **Middle Reliever**: a _pitcher_ who enters the game in the 6th _inning_ or later, but does not finish or earn a _Save_ by pitching in the 9th inning.  
+
+The value of a pitching performance will use the definition of an advanced metric: **Fielding Independent Pitching (FIP)**, which attempts to assign a value to a pitcher based solely on the outcomes that player can control, and measures against the averages across the rest of the league so as to keep the metric relative to the average league pitcher.  From the definition found at the excellent reference website **Fangraphs**, FIP is defined with the following formula: 
+
+\begin{center} $FIP = \frac{(((13*HR)+(3*(BB+HBP))-(2*K)))}{IP} + FIP_{lg}$ \end{center}
+
+In this definition are a few shorthand references to key pitching outcomes:
+
+- **HR** - _Home Run_
+- **BB** - _Walk_ or _Base on Balls_
+- **HBP** - _Hit By Pitch_
+- **K** - _Strikeout_
+- **IP** - _Inning Pitched_
+
+The **FIP Constant** denoted by $FIP_{lg}$ is calculated using league-wide statistics, with each of the variables with _lg_ subscript denoting a league-wide summation, is defined as such:
+
+\begin{center} $FIP_{lg} = ERA_{lg} + \frac{(((13*HR_{lg})+(3*(BB_{lg}+HBP_{lg}))-(2*K_{lg})))}{IP_{lg}}$
+\end{center}
+
+In this definition there is the additional reference of $ERA_{lg}$ or league _Earned Run Average_.
+
+## Defining and Building a Middle Relief Game Data Set
+
+The data set enabling this investigation is available publicly  at **Baseball Savant** (*https://baseballsavant.mlb.com*), which is owned by MLB and has a number of interesting statistics and data-visualization feature on offer.  Of particular interest to building this data set is the **Statcast Search**, which allow for granular searches of historical game data, the results of which can be exported in CSV format.  In this case, I've extracted outcome data for pitchers in the 6th-8th innings only when the player's identified position is _Relief Pitcher_ to tag Middle Relievers only.  To attempt to review a big enough sample, I've used data from 2019 to present.
+
+```{r}
+pitchers_2021 <- read.csv('savant_data_2021.csv')
+pitchers_2019 <- read.csv('savant_data_2019.csv')
+pitchers_2018 <- read.csv('savant_data_2018.csv')
+```
+
+I'll be trying to accomplish this by doing hypothesis testing that **Yes, middle relief does significantly impact win percentage** and **No, when elite relief is introduced on both teams, lineup and defense does not significantly impact game outcome**.  I feel that 
+
