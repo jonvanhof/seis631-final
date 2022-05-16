@@ -1,4 +1,6 @@
-# Middle Relievers: Unsung or Unimportant?
+# Introduction: Middle Relievers, Unsung or Unimportant?
+
+## Why Do I Care About These Nobodies?
 
 As an avid baseball fan and regular Fantasy Baseball participant for the
 Major Leagues, over the years I’ve been curious about the value of a
@@ -26,15 +28,15 @@ fully across the last several seasons of game data to answer the
 question: **Does the introduction of a high-level middle reliever have a
 significant impact on a team’s ability to win games?** Beyond that
 one-player focused inquiry, I’ll attempt to broaden the investigation to
-team averages: **Do teams with above average Middle Relievers have
+team averages: **Do teams with above-average Middle Relievers have
 demonstrably higher winning percentages, and does this change in games
 decided by one run?**
 
-## Baseball Background Definitions
+## What: Baseball Background Definitions
 
 For those unfamiliar with the game of baseball, a brief description can
-be found in the [Baseball article on
-Wikipedia](https://en.wikipedia.org/wiki/Baseball), the first two
+be found in the [**Baseball article on
+Wikipedia**](https://en.wikipedia.org/wiki/Baseball), the first two
 paragraphs of which describe the basics of the game concisely.
 Highlighted terms can be referenced in the **Statistics** section of
 that article. This investigation will assume the following definition of
@@ -48,7 +50,7 @@ to assign a value to a pitcher based solely on the outcomes that player
 can control, and measures against the averages across the rest of the
 league so as to keep the metric relative to the average league pitcher.
 From the definition found at the excellent reference website
-[Fangraphs](https://www.fangraphs.com), FIP is defined with the
+[**Fangraphs**](https://www.fangraphs.com), FIP is defined with the
 following formula:
 
 In this definition are a few shorthand references to key pitching
@@ -67,19 +69,21 @@ subscript denoting a league-wide summation, is defined as such:
 In this definition there is the additional reference of
 *E**R**A*<sub>*l**g*</sub> or league *Earned Run Average*.
 
-## Defining and Building a Middle Reliever Data Set
+## How: Defining and Building a Middle Reliever Data Set
 
 The data set enabling this investigation is also available publicly via
-the **Fangraphs** site. In this case, I’ve extracted FIP ratings for
+the Fangraphs site. In this case, I’ve extracted FIP ratings for
 pitchers pitching only in the 6th-8th innings when it’s their 1st or 2nd
 time facing the batting order to tag Middle Relievers only. The group
 was qualified by having thrown a minimum of 20 innings in a given
-season. This is available via Fangraph’s [Splits
-Leaderboards](https://www.fangraphs.com/leaders/splits-leaderboards)
+season. This is available via Fangraph’s [**Splits
+Leaderboards**](https://www.fangraphs.com/leaders/splits-leaderboards)
 feature. To attempt to review a big enough sample, I’ve used data from
-2018 to present.
+four seasons, 2018-2021
 
     pitch_data <- read.csv('fangraphs_splits.csv')
+
+# Body: The Way and Shape of the Middle Relief Data Set
 
 ## Reviewing the statisical significance of MR FIP
 
@@ -101,9 +105,9 @@ review the standard statistical facts about the data set:
     ##  0.6316  3.2309  3.9079  3.9876  4.6583  7.9700
 
 The Median and Mean bring a few interesting facts about this pitching
-scenario when we look at Fangraph’s published [FIP
-Constants](https://www.fangraphs.com/guts.aspx?type=cn) for the years we
-are reviewing:
+scenario when we look at Fangraph’s published [**FIP
+Constants**](https://www.fangraphs.com/guts.aspx?type=cn) for the years
+we are reviewing:
 
 <table>
 <thead>
@@ -140,8 +144,8 @@ are reviewing:
 </tbody>
 </table>
 
-So *right off the bat*, this group is on average numerically worse than
-the rest of the pitchers in the league, and the league constant is lower
+*Right off the bat*, this group is on average numerically worse than the
+rest of the pitchers in the league, and the league constant is lower
 than even some of those in the 1st quantile of our MR set. This is not
 great to help prove their value, but let’s dig a bit deeper. Focusing on
 those better than average relievers, we’ll grab standard deviation and
@@ -163,7 +167,8 @@ mean as **elite**.
 With these performance categories defined, let’s get a feel for how many
 pitchers meet these criteria, broken down by year. At this point we’ll
 turn to the **Tidyverse** for some additional tooling, notably the
-[dplyr](https://dplyr.tidyverse.org/) library to help examine the data.
+[**dplyr**](https://dplyr.tidyverse.org/) library to help examine the
+data.
 
     pitch_data %>% count(FIP <= GOOD_MR & FIP > ELITE_MR)
 
@@ -196,10 +201,10 @@ So we see that we have just a few elite performances in the 4 year
 sample set, with the former Minnesota Twin Taylor Rogers the only
 pitcher featured twice on the list.
 
-This will be a sufficient bit of data to analyze individual
+This should be a sufficient bit of data to analyze individual
 performances, but it’s also important to analyze average team
 performance, and so we’ll construct a new, smaller data set per Team and
-Season that averages out MR FIP ratings, again using some handy dplyr
+Season that averages out FIP ratings, again using some handy dplyr
 functions:
 
     team_data <- pitch_data %>% select("Season", "Tm", "FIP") %>% group_by(Tm, Season) %>% 
@@ -239,26 +244,31 @@ functions:
     ## 11 HOU     2018   3.04
 
 In this group we find the most significant team performances over the
-past four seasons, of which we’ll look for impact in our analysis.
+past four seasons, of which we’ll look for impact in our analysis. We’re
+again starting with only the best performances being better than the
+league FIP constant, so on average this set is markedly worse than the
+league-average pitcher. Not necessarily a good omen for the impact of
+these players, but we’ll let the numbers dictate our findings.
 
 ## Merging Pitcher Performance with Team Performance
 
-Now with these two sets in hand, how does the correlate to team
+Now with these two sets in hand, how do they correlate to team
 performance, or winning percentage? To find that we turn to another
-source, **Baseball Reference** and their [in-depth historical standings
-data](https://www.baseball-reference.com/leagues/majors/2021-standings.shtml).
+source, **Baseball Reference** and their [**in-depth historical
+standings
+data**](https://www.baseball-reference.com/leagues/majors/2021-standings.shtml).
 This data was also downloaded and concatenated into single CSV file,
 with the team names translated to match the Fangraphs data.
 
     standings <- read.csv('standings18-21.csv')
 
 In particular we’ll be interested in the teams’ Win/Loss %, both overall
-and in 1-run games. Because 1-run W-L% is not calculated, we’ll quickly
+and in 1-run games. Because 1-Run W/L% is not calculated, we’ll quickly
 add that using dplyr’s **mutate** and **select** functions to create the
 new column and trim the data set to just the columns of interest. To
 make this process more repeatable, the calculation will be done in a
 custom function **calc\_wl\_str**, which will employ the Tidyverse
-**stringr** library:
+[**stringr**](%22https://stringr.tidyverse.org%22) library:
 
     calc_wl_str <- function(wl_str) {
       wl <- str_extract_all(wl_str, "\\d{1,2}", simplify = TRUE)
@@ -273,8 +283,8 @@ custom function **calc\_wl\_str**, which will employ the Tidyverse
       select("Season", "Tm", "W.L.", "W.L1")
 
 With these calculations made we’ll make two final preparations for
-analysis: merge team performance data into the pitcher data set, and
-create a new team data set with average pitcher performance calculated.
+analysis: merge team performance data into the pitcher and team data
+sets.
 
     pitch_merge <- pitch_data %>% select("Name", "Season", "Tm", "IP", "FIP") %>%
       left_join(standings, by = c("Season", "Tm"))
@@ -283,7 +293,7 @@ create a new team data set with average pitcher performance calculated.
 
 ## Performing Regression Analysis on the Merged Data
 
-And so we arrive at our opportunity to analyze these compiled data sets.
+And so we arrive at our opportunity to analyze these compiled data.
 We’ll use standard linear regression to compare the FIP data against
 team’s Win/Loss percentage. It’s notable that **we’ll be looking for a
 negative correlation** in this comparison, as lower FIP is better as
@@ -291,9 +301,10 @@ opposed to higher Win/Loss%.
 
 ### All Middle Relievers
 
-**ggplot**, again provided by the Tidyverse, will be our visualization
-tool for all of the review to follow. First a look for any correlation
-between FIP and all teams’ W/L%:
+[**ggplot**](%22https://ggplot2.tidyverse.org%22), again provided by the
+Tidyverse, will be our visualization tool for all of the review to
+follow. First a look for any correlation between FIP and all teams’
+W/L%:
 
     pitch_merge %>% ggplot(., aes(x=FIP, y= W.L.)) + 
       geom_point() + geom_smooth(method="lm", formula = "y ~ x")
@@ -322,8 +333,8 @@ between FIP and all teams’ W/L%:
     ## F-statistic: 22.75 on 1 and 649 DF,  p-value: 2.281e-06
 
 We do have a gentle negative correlation through the data set, but with
-the majority of the data muddled in the middle of the plot and very low
-R-squared values, this correlation appears to be very weak.
+the majority of the data muddled in the middle of the plot and with very
+low R-squared values, this correlation appears to be very weak.
 
 Do this change for 1-Run Games?
 
@@ -359,7 +370,7 @@ record set.
 ### Elite/Good Middle Relievers
 
 Not great results so far, but let’s now look for any correlations among
-our Elite and Good relievers sets. First a comparision of Elite MRs to
+our Elite and Good relievers sets. First a comparison of Elite MRs to
 their teams’ W/L%:
 
     pitch_merge %>% filter(FIP <= ELITE_MR) %>% ggplot(., aes(x=FIP, y= W.L.)) + 
@@ -459,8 +470,9 @@ percentage.
     ## F-statistic: 5.298 on 1 and 102 DF,  p-value: 0.02339
 
 Both sets exhibit an improvement in correlation to a team’s overall
-performance and in 1-Run games, but even with the improvement roughly
-doubling, the correlation is still extremely weak.
+performance and in 1-Run games, but even with the improvement of
+R-Squared values roughly doubling, the correlation is still extremely
+weak.
 
 Does this change when we look at those teams with Good average FIP?
 
@@ -492,7 +504,55 @@ Our final check will be on any teams with above average performance:
 Overall W/L% hews positive and 1-Run performance is essentially flat,
 leaving us with no strong correlations in our analysis.
 
-# Middle Relievers: Not Provably Important
+# Topics From Class
+
+## R Markdown
+
+I’ve used the LaTeX functions in R Markdown to spruce up the formatting
+for the FIP function definitions. Additionally some table formatting,
+typeface decorations, and link were used to round out the written
+portions of the investigation and provide sources. The rmarkdown library
+itself was used to generate a GitHub README.md file.
+
+## GitHub
+
+The R Project file, along with .gitignore tailored for R Markdown
+projects were checked in to GitHub along with the project’s RMarkdown
+and PDF files. A Markdown README file was generated to take advantage of
+Github’s default documentation rendering. Once setup, R Studio’s Git
+interface provided a nice, lightweight method to commit and push files
+to GitHub.
+
+## Mean, Median, Quantiles, Normal Distribution, Standard Deviation
+
+The data set statistics were initially reviewed, with the Mean and
+Median being close to each other to help demonstrate that we are indeed
+dealing with a normally distributed set Independent set, only slightly
+right-skewed. The quantiles help demonstrate the fact that as a whole,
+middle relievers have poorer independent outcomes that league-average
+pitchers, perhaps dooming the significance found in the analysis at the
+outset. The definition of “elite” and “good” pitchers employed
+calculating the standard deviation of roughly 1.11 FIP to allow for
+analysis of these individual segments.
+
+## Tidyverse and R Custom Function
+
+To help with the necessary data wrangling, the Tidyverse **dplyr**,
+**stringr**, and **ggplot** libraries were used, along with a custom
+function definition to more easily derive the 1-Run game Win/Loss% from
+the string present in the standings data set. The online documentation
+and examples are both excellent and plentiful for all Tidyverse
+libraries, and it made their usage even easier.
+
+## Regression
+
+Ultimately, Regression was used in the final analysis to attempt to
+ascertain if there was a significant connection Middle Reliever
+performance and team performance. There was not, but looking at linear
+regression slope, R-squared values, and Residual distribution helped
+prove that there was no proof of strong correlation.
+
+# Conclusion: Middle Relievers, Not Provably Important
 
 With no strong correlations and residual data all over the place, we
 cannot draw a conclusion that our Middle Relievers have a statistically
@@ -505,49 +565,17 @@ quality were brought into the equation. With that said, the data
 certainly points more strongly to success through the core tenants of
 the Oakland A’s original
 [**Moneyball**](https://en.wikipedia.org/wiki/Moneyball) team: get on
-base and hit homeruns.
+base and hit home runs.
 
-# Topics From Class
-
-## R Markdown
-
-I’ve used the LaTeX functions in R Markdown to spruce up the formatting
-for the FIP function definitions. Additionally some table formatting,
-typeface decorations, and footnotes were used to round out the written
-portions of the investigation.
-
-## GitHub
-
-The R Project file, along with .gitignore tailored for R Markdown
-projects were checked in to GitHub along with the project’s RMarkdown
-and PDF files. A Markdown README file was generated to take advantage of
-Github’s default documentation rendering.
-
-## Mean, Median, Quantiles, Normal Distribution
-
-The data set statistics were initially reviewed, with the Mean and
-Median being close to each other to help demonstrate that we are indeed
-dealing with a normally distributed set Independent set, only slightly
-right-skewed. The quantiles help demonstrate the fact that as a whole,
-middle relievers are lower
-
-## Standard Deviation
-
-The definition of “elite” and “good” pitchers employed calculating the
-standard deviation of roughly 1.11 FIP to allow for analysis of these
-individual segments.
-
-## Tidyverse and R Custom Function
-
-To help with the necessary data wrangling, the Tidyverse **dplyr**,
-**stringr**, and **ggplot** libraries were used, along with a custom
-function definition to more easily derive the 1-Run game Win/Loss% from
-the string present in the standings data set.
-
-## Regression
-
-Ultimately, Regression was used in the final analysis to attempt to
-ascertain if there was a significant connection Middle Reliever
-performance and team performance. There was not, but looking at linear
-regression slope, R-squared values, and Residual distribution helped
-prove that there was no proof of strong correlation.
+The exercise, though mediocre in the performance of it’s desired goals,
+did provide a great chance to dig in to the tools of the Tidyverse. I
+have a strong background in databases and SQL tools, and so being able
+to use the Tidyverse toolkit to be able to chain functions together were
+invaluable to being able to do analysis in an efficient manner. My
+initial desire was to compute a large and more raw data set provided by
+MLB’s [**Baseball
+Savant**](%22https://baseballsavant.mlb.com/statcast_search%22), but
+these sets proved too large and unwieldy to pre-process. The need for an
+alternative had me digging in to the tools provided by Fangraphs and
+Baseball Reference, which are wonderful and expansive resources for
+baseball researchers.
