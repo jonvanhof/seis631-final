@@ -336,7 +336,7 @@ We do have a gentle negative correlation through the data set, but with
 the majority of the data muddled in the middle of the plot and with very
 low R-squared values, this correlation appears to be very weak.
 
-Do this change for 1-Run Games?
+Does this change for 1-Run Games?
 
     pitch_merge %>% ggplot(., aes(x=FIP, y= W.L1)) + 
       geom_point() + geom_smooth(method="lm", formula = "y ~ x")
@@ -370,7 +370,7 @@ record set.
 ### Elite/Good Middle Relievers
 
 Not great results so far, but let’s now look for any correlations among
-our Elite and Good relievers sets. First a comparison of Elite MRs to
+our Elite and Good reliever sets. First a comparison of Elite MRs to
 their teams’ W/L%:
 
     pitch_merge %>% filter(FIP <= ELITE_MR) %>% ggplot(., aes(x=FIP, y= W.L.)) + 
@@ -557,15 +557,14 @@ prove that there was no proof of strong correlation.
 With no strong correlations and residual data all over the place, we
 cannot draw a conclusion that our Middle Relievers have a statistically
 significant impact on a team’s ability to win games, even those games
-decided by one run. In the opinion of this author, it’s frankly shocking
-that the correlations we created through analysis were so poor, at least
-in the context of FIP. With pitching the essential front line to team
-defense, perhaps a stronger correlation would be found if team fielding
-quality were brought into the equation. With that said, the data
-certainly points more strongly to success through the core tenants of
-the Oakland A’s original
-[**Moneyball**](https://en.wikipedia.org/wiki/Moneyball) team: get on
-base and hit home runs.
+decided by one run. In my opinion, it’s frankly shocking that the
+correlations we created through analysis were so poor, at least in the
+context of FIP. With pitching the essential front line to team defense,
+perhaps a stronger correlation would be found if team fielding quality
+were brought into the equation. With that said, the data certainly
+points more strongly to success through the core tenants of the Oakland
+A’s original [**Moneyball**](https://en.wikipedia.org/wiki/Moneyball)
+team: get on base and hit home runs.
 
 The exercise, though mediocre in the performance of it’s desired goals,
 did provide a great chance to dig in to the tools of the Tidyverse. I
@@ -574,8 +573,8 @@ to use the Tidyverse toolkit to be able to chain functions together were
 invaluable to being able to do analysis in an efficient manner. My
 initial desire was to compute a large and more raw data set provided by
 MLB’s [**Baseball
-Savant**](%22https://baseballsavant.mlb.com/statcast_search%22), but
-these sets proved too large and unwieldy to pre-process. The need for an
+Savant**](https://baseballsavant.mlb.com/statcast_search), but these
+sets proved too large and unwieldy to pre-process. The need for an
 alternative had me digging in to the tools provided by Fangraphs and
 Baseball Reference, which are wonderful and expansive resources for
 baseball researchers.
